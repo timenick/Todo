@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, HttpResponsePermanentRedirect
 from todolist import models
 
+
 def todo_list(request):
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -10,13 +11,15 @@ def todo_list(request):
     list = models.Todo.objects.all()
     return render(request, 'todolist.html', locals())
 
-def complete(request, id):
-    todo_item = get_object_or_404(models.Todo, id=id)
+
+def complete(request, idx):
+    todo_item = get_object_or_404(models.Todo, id=idx)
     todo_item.completed = True
     todo_item.save()
     return HttpResponsePermanentRedirect('/')
 
-def delete(request, id):
-    todo = get_object_or_404(models.Todo, id=id)
+
+def delete(request, idx):
+    todo = get_object_or_404(models.Todo, id=idx)
     todo.delete()
     return HttpResponsePermanentRedirect('/')
