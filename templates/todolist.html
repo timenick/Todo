@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <h1>TodoList</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Completed</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for todo in list %}
+                    <tr>
+                        <td>{{ todo.title }}</td>
+                        <td>
+                            {% if todo.completed %}
+                                <del>已完成</del>
+                            {% else %}
+                                <form action="/complete/{{ todo.id }}/">
+                                    <button class="btn btn-primary"
+                                            type="submit">
+                                        标记完成
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form action="/delete/{{ todo.id }}/">
+                                <button class="btn btn-primary"
+                                        type="submit">
+                                    删除
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#add">
+            添加
+        </button>
+        <div class="modal fade" id="add">
+            <form method="post">
+                {% csrf_token %}
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">ADD TODO</h5>
+                            <button type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">ToDo</span>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="想要做什么"
+                                       aria-label="todo"
+                                       name="title"
+                                       aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <input type="hidden" name="action" value="add"/>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">
+                                确定
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
